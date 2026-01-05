@@ -1,69 +1,13 @@
 from typing import Dict, List
-from utils import (
-    dict_categories_to_excel_single_sheet,
-    read_dict_from_json,
-    write_dict_to_json,
+from excel import dict_categories_to_excel_single_sheet
+from json_data import read_dict_from_json, write_dict_to_json
+from user_input import (
+    gain_user_input,
+    inquire_for_starting_category,
     determine_if_date_format,
     determine_if_just_numbers,
     determine_if_just_string,
 )
-
-
-def gain_user_input(question, additional_boolean_funciton=lambda x: True):
-    user_input = input(f"{question}: ")
-    while user_input == "" or not additional_boolean_funciton(user_input):
-        user_input = input(f"{question}: ")
-
-    return user_input
-
-
-def print_out_category_rows(
-    column_size: int, category_list: list[str], column: int
-) -> None:
-    print("    ", end="")
-    for item in category_list[
-        column * column_size : column * column_size + column_size
-    ]:
-        space = "                "[0 : 16 - len(item)]
-        print(item + space, end="")
-    print("    \n")
-
-    print("    ", end="")
-    for item in category_list[
-        column * column_size : column * column_size + column_size
-    ]:
-        shortened_item = f"({item[0:2]})"
-        space = "                "[0 : 16 - (len(shortened_item))]
-
-        print(shortened_item + space, end="")
-    print("    \n")
-
-
-def inquire_for_starting_category(category_list) -> str:
-    column_size: int = 4
-    row_number: int = (len(category_list) + column_size - 1) // column_size
-    print("    ")
-    print("    ")
-
-    print(
-        "Here Are All the Categories you have for Expense Items and their Abbreviations:"
-    )
-    print("    ")
-
-    abbreviation_category_conversion: dict[str, str] = {
-        category[0:2]: category for category in category_list
-    }
-    for row in range(row_number):
-        print_out_category_rows(column_size, category_list, row)
-    abbreviated_category: str = input(
-        "Please Type the Abbreviation for the Categories: "
-    ).upper()
-    while abbreviated_category not in list(abbreviation_category_conversion):
-        abbreviated_category: str = input(
-            "Please Type the Abbreviation for the Categories: "
-        ).upper()
-
-    return abbreviation_category_conversion[abbreviated_category]
 
 
 def add_expense_item() -> dict[str, str | int]:
