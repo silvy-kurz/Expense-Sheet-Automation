@@ -1,6 +1,6 @@
 import pickle
 from datetime import datetime
-from typing import Dict
+from typing import Dict, List
 from pickle import dumps
 from edwh_uuid7 import uuid7, uuid7_to_datetime
 import lmdb
@@ -32,6 +32,18 @@ def read_expense_from_database(database, database_key):
     return expense
 
 
+def extract_current_year():
+    current_datetime = datetime.now()
+
+    return current_datetime.year
+
+
+def build_dict_from_database_section(database_cursor, section_condition):
+    all_keys = database_cursor.keys()
+    section_keys = filter(section_condition, all_keys)
+    print(section_keys)
+
+
 def show_all_database():
     with env.begin() as txn:
         # Get a cursor
@@ -44,14 +56,18 @@ def show_all_database():
 
 
 if __name__ == "__main__":
-    testing_expense = {
-        "Item": "red brown teal pants plus Jordan",
-        "Amount": "3000",
-        "Date": "2025-29-12",
-    }
+    # testing_expense = {
+    #     "Item": "red brown teal pants plus Jordan",
+    #     "Amount": "3000",
+    #     "Date": "2025-29-12",
+    # }
 
-    with env.begin(write=True) as database:
-        add_expense_to_database(database, testing_expense)
+    # with env.begin(write=True) as database:
+    #     add_expense_to_database(database, testing_expense)
 
     show_all_database()
-    print(datetime.now())
+    with env.begin() as txn:
+        # Get a cursor
+        print("dasjjkasdjks")
+        with txn.cursor() as curs:
+            build_dict_from_database_section(curs, lambda x: b"5" in x)

@@ -18,7 +18,7 @@ def write_dict_to_json(data, file_path):
         print(f"Error writing to JSON file: {e}")
 
 
-def read_dict_from_json(file_path) -> Dict[str, List[Dict[str, str | int]]]:
+def read_dict_from_json(file_path) -> Dict[str, List[Dict[str, str]]]:
     """
     Reads a dictionary from a JSON file.
 
